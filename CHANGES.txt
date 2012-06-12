@@ -1,0 +1,2 @@
+# No guarantees this is complete.  Please see git repo history.
+2012-06-12 0405 EDT: Fixed bug failing on new lines; renamed items method
