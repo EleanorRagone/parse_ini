@@ -1,8 +1,9 @@
 class ParseINI(dict):
-    def __init__(self, file, globals_dict=False):
+    def __init__(self, file, upper=True, globals_dict=False):
         super(ParseINI, self).__init__(self)
         self.file = file
         self.globals_dict = globals_dict
+        self.upper = upper
         self.__read()
 
     def __read(self):
@@ -20,6 +21,8 @@ class ParseINI(dict):
                     sections = line[1:-1].split('.')
                     slovnik = self
                     for section in sections:
+                        if self.upper:
+                            section = section.upper()
                         if section not in slovnik:
                             slovnik[section] = {}
                         slovnik = slovnik[section]
@@ -28,7 +31,15 @@ class ParseINI(dict):
                         slovnik['global'] = {}
                         slovnik = slovnik['global']
                     parts = line.split(":", 1)
-                    slovnik[parts[0].strip()] = parts[1].strip()
+                    key = parts[0].strip()
+                    value = parts[1].strip()
+                    if self.upper:
+                        key = key.upper()
+                    if value.lower() == "true":
+                        value = True
+                    elif value.lower() == "false":
+                        value = False
+                    slovnik[key.upper()] = value
 
     def items_from_section(self, section):
         try:
