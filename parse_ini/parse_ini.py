@@ -10,7 +10,10 @@ class ParseINI(dict):
         with open(self.file, 'r') as file:
             slovnik = self
             for line in file:
-                if line.startswith("#") or line.startswith(';') or not line.strip():
+                if line.strip().startswith("#") or line.strip().startswith(';') or not line.strip():
+                    continue
+                if ":" not in line and "=" not in line:
+                    print "Skipping line due to no colon or equals: %s" % (line,)
                     continue
                 line = line.replace('=', ':')
                 line = line.replace(';', '#')
