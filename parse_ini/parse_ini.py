@@ -1,5 +1,6 @@
 class ParseINI(dict):
     def __init__(self, file):
+        super(ParseINI, self).__init__(self)
         self.file = file
         self.__read()
 
@@ -7,7 +8,7 @@ class ParseINI(dict):
         with open(self.file, 'r') as file:
             slovnik = self
             for line in file:
-                if line.startswith("#") and not line.startswith(';') and line.strip() != "":
+                if line.startswith("#") or line.startswith(';') or not line.strip():
                     continue
                 line = line.replace('=', ':')
                 line = line.replace(';', '#')
@@ -28,7 +29,7 @@ class ParseINI(dict):
                     parts = line.split(":", 1)
                     slovnik[parts[0].strip()] = parts[1].strip()
 
-    def items(self, section):
+    def items_from_section(self, section):
         try:
             return self[section]
         except KeyError:
