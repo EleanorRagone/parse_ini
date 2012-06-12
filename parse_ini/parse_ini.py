@@ -1,7 +1,8 @@
 class ParseINI(dict):
-    def __init__(self, file):
+    def __init__(self, file, globals_dict=False):
         super(ParseINI, self).__init__(self)
         self.file = file
+        self.globals_dict = globals_dict
         self.__read()
 
     def __read(self):
@@ -23,7 +24,7 @@ class ParseINI(dict):
                             slovnik[section] = {}
                         slovnik = slovnik[section]
                 else:
-                    if not self:
+                    if not self and self.globals_dict:
                         slovnik['global'] = {}
                         slovnik = slovnik['global']
                     parts = line.split(":", 1)
